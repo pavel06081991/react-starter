@@ -1,0 +1,15 @@
+doctype html
+html
+  head
+    base(href="/")
+    if htmlWebpackPlugin.options.custom.assets.vendor.css
+      link(rel="stylesheet" href=`${htmlWebpackPlugin.options.custom.assets.vendor.css}`)
+    if htmlWebpackPlugin.files.chunks.app.css[0]
+      link(rel="stylesheet" href=`${htmlWebpackPlugin.files.chunks.app.css[0]}`)
+    | !{htmlWebpackPlugin.files.webpackChunkManifest}
+    script(src=`${htmlWebpackPlugin.options.custom.assets.vendor.js}` defer)
+    if htmlWebpackPlugin.options.custom.IS_PRODUCTION_ENV
+      script(src=`${htmlWebpackPlugin.files.chunks['webpack-runtime'].entry}` defer)
+    script(src=`${htmlWebpackPlugin.files.chunks.app.entry}` defer)
+  body
+    #app
