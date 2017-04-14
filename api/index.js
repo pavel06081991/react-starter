@@ -1,15 +1,18 @@
-const jsonServer = require('json-server');
+import jsonServer from 'json-server';
+import settings from '../settings';
 
 const {
   API_PORT,
   API_HOST,
   PATHS,
-} = require('../settings');
+} = settings;
 
 const app = jsonServer.create();
+
 const middlewares = jsonServer.defaults({
   static: PATHS.appBuildDir,
 });
+
 const router = jsonServer.router(PATHS.apiDataFile);
 
 app.use(middlewares);
@@ -20,16 +23,18 @@ app.use(jsonServer.rewriter({
 
 app.use(router);
 
-const server = {
-  start(serverReadyCallback) {
-    this.instance = app.listen(API_PORT, API_HOST, (err) => {
-      if (err) {
-        console.log(err);
-      }
+const apiServer = {
+  start() {
+    return new Promise((resolve, reject) => {
+      this.instance = app.listen(API_PORT, API_HOST, (err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
 
-      console.log(`Api mock server is listening at ${API_HOST}:${API_PORT}`);
-
-      serverReadyCallback && serverReadyCallback();
+        console.log(`Api server is listening at ${API_HOST}:${API_PORT}`);
+        resolve();
+      });
     });
   },
   stop() {
@@ -38,7 +43,7 @@ const server = {
 };
 
 if (require.main === module) {
-  server.start();
+  apiServer.start();
 }
 
-module.exports = server;
+export default apiServer;

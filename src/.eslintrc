@@ -1,0 +1,27 @@
+{
+  "root": true,
+  "parser": "babel-eslint",
+  "extends": [
+    "airbnb"
+  ],
+  "globals": {
+    "__IS_PRODUCTION_ENV__": true,
+    "__IS_DEVELOPMENT_ENV__": true,
+    "__API_URL__": true
+  },
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "import/extensions": "off",
+    "import/no-extraneous-dependencies": "off",
+    "react/jsx-filename-extension": "off",
+    "import/no-unresolved": "off",
+    "react/prefer-stateless-function": "off",
+    "global-require": "off",
+    "import/no-dynamic-require": "off",
+    "no-use-before-define": "off",
+    "import/prefer-default-export": "off",
+    "no-unused-expressions": "off"
+  }
+}
