@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'path';
 
 const ACTIVE_ENV = process.env.NODE_ENV;
 
@@ -12,7 +12,7 @@ const IS_ACTIVE_ENV = {
   development: ENVS.development === ACTIVE_ENV,
 };
 
-const API_PORT = process.env.API_PORT || 3003;
+const API_PORT = process.env.API_PORT || 3004;
 const API_HOST = 'localhost';
 const SERVER_PORT = process.env.SERVER_PORT || 3000;
 const SERVER_HOST = 'localhost';
@@ -82,7 +82,7 @@ const PATHS = {
   indexTemplateFile,
 };
 
-module.exports = {
+export default {
   API_PORT,
   API_HOST,
   API_URL,

@@ -1,10 +1,9 @@
-const {
-  PATHS,
-} = require('../settings');
+import apiServer from '../api/';
+import appServer from '../server/';
 
-const appServer = require(PATHS.serverFile);
-const apiServer = require(PATHS.apiFile);
+async function startDev() {
+  await apiServer.start();
+  await appServer.start();
+}
 
-apiServer.start(() => {
-  appServer.start();
-});
+startDev();

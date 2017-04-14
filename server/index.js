@@ -1,21 +1,25 @@
+import settings from '../settings';
+
 const {
   ACTIVE_ENV,
   SERVER_PORT,
   SERVER_HOST,
-} = require('../settings');
+} = settings;
 
-const server = {
-  start(serverReadyCallback) {
-    const app = require(`./${ACTIVE_ENV}`);
+const appServer = {
+  async start() {
+    const { default: app } = await import(`./${ACTIVE_ENV}`);
 
-    this.instance = app.listen(SERVER_PORT, SERVER_HOST, (err) => {
-      if (err) {
-        console.log(err);
-      }
+    return new Promise((resolve, reject) => {
+      this.instance = app.listen(SERVER_PORT, SERVER_HOST, (err) => {
+        if (err) {
+          reject(err);
+          return;
+        }
 
-      console.log(`App server is listening at ${SERVER_HOST}:${SERVER_PORT}`);
-
-      serverReadyCallback && serverReadyCallback();
+        console.log(`App server is listening at ${SERVER_HOST}:${SERVER_PORT}`);
+        resolve();
+      });
     });
   },
   stop() {
@@ -24,7 +28,7 @@ const server = {
 };
 
 if (require.main === module) {
-  server.start();
+  appServer.start();
 }
 
-module.exports = server;
+export default appServer;

@@ -1,15 +1,16 @@
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import settings from '../../settings';
 
 const {
   PATHS,
   IS_ACTIVE_ENV,
   APP_PUBLIC_PATH,
   API_URL,
-} = require('../../settings');
+} = settings;
 
-module.exports = {
+export default {
   context: PATHS.srcDir,
 
   entry: {

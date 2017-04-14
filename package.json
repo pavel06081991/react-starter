@@ -13,10 +13,10 @@
     "prebuild:app:dev": "npm run clean:build:app",
     "clean:build:app": "del-cli public/* !public/dll",
     "clean:build:vendor": "del-cli public/dll/vendor",
-    "build:vendor:prod": "cross-env NODE_ENV=production webpack --config webpack/production/vendor.config.js --color --progress",
-    "build:vendor:dev": "cross-env NODE_ENV=development webpack --config webpack/development/vendor.config.js --color --progress",
-    "build:app:prod": "cross-env NODE_ENV=production webpack --config webpack/production/app.config.js --color --progress",
-    "build:app:dev": "cross-env NODE_ENV=development webpack --config webpack/development/app.config.js --color --progress",
+    "build:vendor:prod": "cross-env NODE_ENV=production babel-node node_modules/webpack/bin/webpack.js --config webpack/production/vendor.config.js --color --progress",
+    "build:vendor:dev": "cross-env NODE_ENV=development babel-node node_modules/webpack/bin/webpack.js --config webpack/development/vendor.config.js --color --progress",
+    "build:app:prod": "cross-env NODE_ENV=production babel-node node_modules/webpack/bin/webpack.js --config webpack/production/app.config.js --color --progress",
+    "build:app:dev": "cross-env NODE_ENV=development babel-node node_modules/webpack/bin/webpack.js --config webpack/development/app.config.js --color --progress",
     "build:prod": "npm run build:vendor:prod && npm run build:app:prod",
     "build:dev": "npm run build:vendor:dev && npm run build:app:dev",
     "lint:stylelint": "stylelint --ignore-path .gitignore",
@@ -24,14 +24,15 @@
     "lint:js": "npm run lint:eslint -- .",
     "lint:css": "npm run lint:stylelint -- **/*.css",
     "lint:staged": "lint-staged",
-    "precommit": "npm run lint:staged && npm run test:unit && npm run test:e2e",
-    "test:e2e": "npm run build:prod && node scripts/e2e.js",
-    "test:unit": "karma start karma.conf.js",
-    "test:all": "npm run lint:js && npm run lint:css && npm run test:unit && npm run test:e2e",
-    "start:dev": "npm run build:vendor:dev && cross-env NODE_ENV=development node scripts/start-dev.js",
+    "test:e2e": "npm run build:prod && babel-node scripts/e2e.js",
+    "test:unit": "babel-node node_modules/karma/bin/karma start karma.conf.js",
+    "test:ci": "npm run lint:js && npm run lint:css && npm run test:unit && npm run test:e2e",
+    "test:precommit": "npm run lint:staged && npm run test:unit && npm run test:e2e",
+    "start:dev": "npm run build:vendor:dev && cross-env NODE_ENV=development babel-node scripts/start-dev.js",
     "start:prod": "npm run build:prod && npm run start:server:prod",
-    "start:server:prod": "cross-env NODE_ENV=production node server/index.js",
-    "start:api": "node api/index.js"
+    "start:server:prod": "cross-env NODE_ENV=production babel-node server/index.js",
+    "start:api": "babel-node api/index.js",
+    "precommit": "npm run test:precommit"
   },
   "lint-staged": {
     "*.css": [
@@ -44,55 +45,6 @@
       "git add"
     ]
   },
-  "eslintConfig": {
-    "parser": "babel-eslint",
-    "extends": [
-      "airbnb"
-    ],
-    "globals": {
-      "IS_PRODUCTION_ENV": true,
-      "IS_DEVELOPMENT_ENV": true
-    },
-    "env": {
-      "browser": true
-    },
-    "plugins": [
-      "compat"
-    ],
-    "rules": {
-      "import/extensions": "off",
-      "import/no-extraneous-dependencies": "off",
-      "react/jsx-filename-extension": "off",
-      "import/no-unresolved": "off",
-      "react/prefer-stateless-function": "off",
-      "global-require": "off",
-      "import/no-dynamic-require": "off",
-      "no-use-before-define": "off",
-      "import/prefer-default-export": "off",
-      "no-unused-expressions": "off"
-    }
-  },
-  "stylelint": {
-    "extends": "stylelint-config-standard"
-  },
-  "babel": {
-    "presets": [
-      [
-        "env",
-        {
-          "modules": false,
-          "useBuiltIns": true,
-          "targets": {
-            "browsers": [
-              "last 1 Chrome versions"
-            ]
-          }
-        }
-      ],
-      "stage-2",
-      "react"
-    ]
-  },
   "browserslist": [
     "last 1 Chrome versions"
   ],
@@ -100,9 +52,11 @@
   "license": "ISC",
   "devDependencies": {
     "assets-webpack-plugin": "^3.5.1",
+    "babel-cli": "^6.24.1",
     "babel-core": "^6.21.0",
     "babel-eslint": "^7.2.1",
     "babel-loader": "^6.2.10",
+    "babel-plugin-dynamic-import-node": "^1.0.1",
     "babel-preset-env": "^1.1.8",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-2": "^6.22.0",
@@ -115,7 +69,6 @@
     "enzyme": "^2.7.1",
     "eslint": "^3.15.0",
     "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-compat": "^1.0.2",
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.9.0",
@@ -144,7 +97,7 @@
     "sinon": "^2.1.0",
     "style-loader": "^0.16.1",
     "stylefmt": "^5.1.1",
-    "stylelint": "^7.7.1",
+    "stylelint": "^7.10.1",
     "stylelint-config-standard": "^16.0.0",
     "wdio-mocha-framework": "^0.5.8",
     "webdriverio": "^4.6.2",

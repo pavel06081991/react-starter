@@ -1,10 +1,11 @@
+import settings from './settings';
+import webpackAppTestConfig from './webpack/testing/app.config';
+
 const {
   PATHS,
-} = require('./settings');
+} = settings;
 
-const webpackConfig = require(PATHS.webpackAppTestConfigFile);
-
-module.exports = function getConfig(config) {
+export default (config) => {
   config.set({
     basePath: PATHS.rootDir,
     browsers: ['Chrome'],
@@ -36,7 +37,7 @@ module.exports = function getConfig(config) {
       'progress',
       'coverage',
     ],
-    webpack: webpackConfig,
+    webpack: webpackAppTestConfig,
     coverageReporter: {
       type: 'html',
       dir: PATHS.unitTestCoverageDir,
