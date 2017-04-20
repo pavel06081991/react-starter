@@ -1,64 +1,58 @@
+import selenium from 'selenium-standalone';
+import { Launcher } from 'webdriverio';
+import settings from '../settings';
+import apiServer from '../api/';
+
 const {
   PATHS,
-} = require('../settings');
-
-const selenium = require('selenium-standalone');
-const Launcher = require('webdriverio').Launcher;
-const apiServer = require(PATHS.apiFile);
+} = settings;
 
 const wdio = new Launcher(PATHS.wdioConfigFile);
 
 function installSelenium() {
-  selenium.install(onSeleniumInstallFinished);
-}
+  return new Promise((resolve, reject) => {
+    selenium.install((error) => {
+      if (error) {
+        reject(error);
+        return;
+      }
 
-function onSeleniumInstallFinished(error) {
-  if (error) {
-    console.error('Installing selenium failed', error.stacktrace);
-    process.exitCode = 1;
-    return;
-  }
-
-  startSelenium();
-}
-
-function startSelenium() {
-  selenium.start(onSeleniumStarted);
-}
-
-function onSeleniumStarted(error, child) {
-  if (error) {
-    console.error('Running selenium failed', error.stacktrace);
-    process.exitCode = 1;
-    return;
-  }
-
-  selenium.child = child;
-  startApiServer();
-}
-
-function startApiServer() {
-  apiServer.start(onServerStarted);
-}
-
-function onServerStarted() {
-  startTests();
-}
-
-function startTests() {
-  wdio.run().then((code) => {
-    closeProcess();
-    process.exitCode = code;
-  }, (error) => {
-    console.error('Launcher failed to start the tests', error.stacktrace);
-    closeProcess();
-    process.exitCode = 1;
+      resolve();
+    });
   });
 }
 
-function closeProcess() {
-  apiServer.stop();
-  selenium.child.kill();
+function startSelenium() {
+  return new Promise((resolve, reject) => {
+    selenium.start((error, child) => {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      selenium.child = child;
+      resolve();
+    });
+  });
 }
 
-installSelenium();
+async function startE2E() {
+  try {
+    await installSelenium();
+    await startSelenium();
+    await apiServer.start();
+    process.exitCode = await wdio.run();
+  } catch (err) {
+    process.exitCode = 1;
+    console.error('Running e2e tests failed', err.stacktrace);
+  } finally {
+    finishProcess();
+  }
+}
+
+function finishProcess() {
+  apiServer.stop();
+  selenium.child && selenium.child.kill();
+}
+
+startE2E();

@@ -23,4 +23,3 @@ exports.config = {
     global.expect = chai.expect;
   },
 };
-

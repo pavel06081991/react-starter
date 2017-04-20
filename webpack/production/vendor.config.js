@@ -1,16 +1,17 @@
-const webpack = require('webpack');
-const AssetsPlugin = require('assets-webpack-plugin');
-const BabiliPlugin = require('babili-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+import webpack from 'webpack';
+import AssetsPlugin from 'assets-webpack-plugin';
+import BabiliPlugin from 'babili-webpack-plugin';
+import ExtractTextPlugin from 'extract-text-webpack-plugin';
+import settings from '../../settings';
 
 const {
   PATHS,
   VENDOR_LIBRARY_VAR_NAME,
   VENDOR_ASSETS_FILE_NAME,
   VENDOR_PUBLIC_PATH,
-} = require('../../settings');
+} = settings;
 
-module.exports = {
+export default {
   context: PATHS.srcDir,
 
   entry: {

@@ -2,6 +2,7 @@ doctype html
 html
   head
     base(href="/")
+    meta(charset="UTF-8")
     if htmlWebpackPlugin.options.custom.assets.vendor.css
       link(rel="stylesheet" href=`${htmlWebpackPlugin.options.custom.assets.vendor.css}`)
     if htmlWebpackPlugin.files.chunks.app.css[0]

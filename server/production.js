@@ -1,9 +1,10 @@
-const compression = require('compression');
-const express = require('express');
+import compression from 'compression';
+import express from 'express';
+import settings from '../settings';
 
 const {
   PATHS,
-} = require('../settings');
+} = settings;
 
 const app = express();
 
@@ -12,4 +13,4 @@ app.use(express.static(PATHS.appBuildDir));
 
 app.get('*', (req, res) => res.sendFile(PATHS.serverIndexFile));
 
-module.exports = app;
+export default app;
