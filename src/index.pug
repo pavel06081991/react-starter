@@ -3,10 +3,7 @@ html
   head
     base(href="/")
     meta(charset="UTF-8")
-    if htmlWebpackPlugin.options.custom.assets.vendor.css
-      link(rel="stylesheet" href=`${htmlWebpackPlugin.options.custom.assets.vendor.css}`)
-    if htmlWebpackPlugin.files.chunks.app.css[0]
-      link(rel="stylesheet" href=`${htmlWebpackPlugin.files.chunks.app.css[0]}`)
+    meta(name="viewport" content="width=device-width, initial-scale=1")
     | !{htmlWebpackPlugin.files.webpackChunkManifest}
     script(src=`${htmlWebpackPlugin.options.custom.assets.vendor.js}` defer)
     if htmlWebpackPlugin.options.custom.IS_PRODUCTION_ENV

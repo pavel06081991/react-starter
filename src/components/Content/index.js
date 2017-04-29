@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
-import styles from './styles';
+import { themr } from 'react-css-themr';
 
+@themr('Content')
 export class Content extends Component {
   render() {
+    const { theme } = this.props;
+
     return (
-      <main className={styles.content}>
+      <main className={theme.content}>
         <RaisedButton label="Default" />
       </main>
     );

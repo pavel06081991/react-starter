@@ -10,6 +10,7 @@ const {
 } = settings;
 
 export default new WebpackDevServer(webpack(webpackAppDevConfig), {
+  hot: true,
   publicPath: APP_PUBLIC_PATH,
   contentBase: PATHS.appBuildDir,
   open: true,

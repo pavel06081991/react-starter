@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import settings from '../../settings';
 
 const {
@@ -8,13 +7,19 @@ const {
   IS_ACTIVE_ENV,
   APP_PUBLIC_PATH,
   API_URL,
+  SERVER_URL,
 } = settings;
 
 export default {
   context: PATHS.srcDir,
 
   entry: {
-    app: './app',
+    app: [
+      'react-hot-loader/patch',
+      `webpack-dev-server/client?${SERVER_URL}`,
+      'webpack/hot/only-dev-server',
+      './app',
+    ],
   },
 
   output: {
@@ -43,46 +48,43 @@ export default {
         test: /\.css$/,
         exclude: [
           /node_modules/,
-          PATHS.globalStylesDir,
+          PATHS.globalStylesFile,
         ],
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                sourceMap: true,
-              },
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              sourceMap: true,
+              localIdentName: '[name]__[local]__[hash:base64:5]',
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                config: PATHS.postcssConfigFile,
-              },
-            },
-          ],
-        }),
+          },
+          {
+            loader: 'postcss-loader',
+          },
+        ],
       },
 
       {
         test: /\.css$/,
-        include: PATHS.globalStylesDir,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-              },
+        include: PATHS.globalStylesFile,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                config: PATHS.postcssConfigFile,
-              },
-            },
-          ],
-        }),
+          },
+          {
+            loader: 'postcss-loader',
+          },
+        ],
       },
 
       {
@@ -131,10 +133,7 @@ export default {
 
     new webpack.NamedModulesPlugin(),
 
-    new ExtractTextPlugin({
-      filename: '[name].css',
-      allChunks: true,
-    }),
+    new webpack.HotModuleReplacementPlugin(),
   ],
 
   devtool: 'source-map',

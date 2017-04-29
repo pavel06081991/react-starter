@@ -1,7 +1,6 @@
 import 'react';
 import 'react-dom';
 import 'react-router';
-import 'react-router-scroll';
 import 'react-helmet';
 import 'react-intl';
 import 'react-tap-event-plugin';

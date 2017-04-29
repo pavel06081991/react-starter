@@ -16,14 +16,14 @@ const API_PORT = process.env.API_PORT || 3004;
 const API_HOST = 'localhost';
 const SERVER_PORT = process.env.SERVER_PORT || 3000;
 const SERVER_HOST = 'localhost';
-const API_URL = `http://localhost:${SERVER_PORT}/api/`; // for webpack define plugin
-const API_PROXY_URL = `http://localhost:${API_PORT}`; // for webpack-dev-server
+const SERVER_URL = `http://${SERVER_HOST}:${SERVER_PORT}`;
+const API_URL = `http://${API_HOST}:${SERVER_PORT}/api/`; // for webpack define plugin
+const API_PROXY_URL = `http://${API_HOST}:${API_PORT}`; // for webpack-dev-server
 
 const APP_PUBLIC_PATH = '/';
 const VENDOR_PUBLIC_PATH = '/dll/vendor/';
 
 const VENDOR_ASSETS_FILE_NAME = 'vendor.json';
-const POSTCSS_CONFIG_FILE_NAME = 'postcss.config.js';
 const VENDOR_MANIFEST_FILE_NAME = 'vendor.json';
 const WEBPACK_APP_CONFIG_FILENAME = 'app.config.js';
 
@@ -32,8 +32,9 @@ const VENDOR_LIBRARY_VAR_NAME = 'vendor';
 const rootDir = __dirname;
 const srcDir = path.join(rootDir, 'src');
 const ciDir = path.join(rootDir, 'ci');
+const commonDir = path.join(srcDir, 'common');
+const commonStylesDir = path.join(commonDir, 'styles');
 const unitTestCoverageDir = path.join(ciDir, 'tests/unit/coverage');
-const globalStylesDir = path.join(srcDir, 'styles');
 const apiDir = path.join(rootDir, 'api');
 const serverDir = path.join(rootDir, 'server');
 const appBuildDir = path.join(rootDir, 'public');
@@ -47,9 +48,9 @@ const buildInfoAssetsDir = path.join(buildInfoDir, 'assets');
 const buildInfoManifestsDir = path.join(buildInfoDir, 'manifests');
 const dllBuildsDir = path.join(appBuildDir, 'dll');
 const vendorBuildDir = path.join(dllBuildsDir, 'vendor');
+const globalStylesFile = path.join(commonStylesDir, 'global.css');
 const vendorManifestFile = path.join(buildInfoManifestsDir, VENDOR_MANIFEST_FILE_NAME);
 const vendorAssetsFile = path.join(buildInfoAssetsDir, VENDOR_ASSETS_FILE_NAME);
-const postcssConfigFile = path.join(rootDir, POSTCSS_CONFIG_FILE_NAME);
 const wdioConfigFile = path.join(rootDir, 'wdio.conf.js');
 const webpackAppDevConfigFile = path.join(webpackDevConfigsDir, WEBPACK_APP_CONFIG_FILENAME);
 const webpackAppTestConfigFile = path.join(webpackTestConfigsDir, WEBPACK_APP_CONFIG_FILENAME);
@@ -68,14 +69,13 @@ const PATHS = {
   appBuildDir,
   buildInfoAssetsDir,
   vendorBuildDir,
-  globalStylesDir,
+  globalStylesFile,
   apiDataFile,
   serverIndexFile,
   webpackAppDevConfigFile,
   webpackAppTestConfigFile,
   vendorAssetsFile,
   vendorManifestFile,
-  postcssConfigFile,
   apiFile,
   serverFile,
   wdioConfigFile,
@@ -89,6 +89,7 @@ export default {
   API_PROXY_URL,
   SERVER_PORT,
   SERVER_HOST,
+  SERVER_URL,
   PATHS,
   ACTIVE_ENV,
   ENVS,

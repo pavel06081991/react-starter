@@ -15,5 +15,15 @@
     ],
     "stage-2",
     "react"
-  ]
+  ],
+  "plugins": [
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "development": {
+      "plugins": [
+        "react-hot-loader/babel"
+      ]
+    }
+  }
 }

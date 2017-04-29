@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import settings from '../../settings';
 
 const {
@@ -38,16 +37,17 @@ export default {
       {
         test: /\.css$/,
         include: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                sourceMap: true,
-              },
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              sourceMap: true,
             },
-          ],
-        }),
+          },
+        ],
       },
     ],
   },
@@ -75,11 +75,6 @@ export default {
     }),
 
     new webpack.NamedModulesPlugin(),
-
-    new ExtractTextPlugin({
-      filename: '[name].css',
-      allChunks: true,
-    }),
   ],
 
   devtool: 'source-map',

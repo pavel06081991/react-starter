@@ -1,16 +1,15 @@
 import { createStore, applyMiddleware } from 'redux';
-import { routerMiddleware } from 'react-router-redux';
 import { fromJS } from 'immutable';
 import createSagaMiddleware from 'redux-saga';
 import createReducer from 'reducers';
 import { setStore as setStoreToAsyncInjectors } from 'utils/asyncInjectors';
+import rootSaga from 'sagas';
 
 const sagaMiddleware = createSagaMiddleware();
 
-export default function configureStore(initialState = {}, history) {
+export default function configureStore(initialState = {}) {
   const middlewares = [
     sagaMiddleware,
-    routerMiddleware(history),
   ];
   const store = createStore(
     createReducer(),
@@ -23,6 +22,8 @@ export default function configureStore(initialState = {}, history) {
   // Extensions
   store.runSaga = sagaMiddleware.run;
   store.asyncReducers = {}; // Async reducer registry
+
+  sagaMiddleware.run(rootSaga);
 
   return store;
 }

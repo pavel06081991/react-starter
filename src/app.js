@@ -4,37 +4,38 @@ import 'common/styles/global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { applyRouterMiddleware, Router, browserHistory } from 'react-router';
-import { syncHistoryWithStore } from 'react-router-redux';
-import { useScroll } from 'react-router-scroll';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import configureStore from 'store';
-import createRoutes from 'routes';
-import { makeSelectLocationState } from 'selectors';
+import { AppContainer } from 'react-hot-loader';
+import ThemesManager from 'containers/ThemesManager';
+import App from 'containers/App';
 
 injectTapEventPlugin();
 
 const initialState = {};
-const store = configureStore(initialState, browserHistory);
+const store = configureStore(initialState);
 
-const history = syncHistoryWithStore(browserHistory, store, {
-  selectLocationState: makeSelectLocationState(),
-});
+const render = () => {
+  ReactDOM.render(
+    <AppContainer>
+      <Provider store={store}>
+        <ThemesManager>
+          <MuiThemeProvider>
+            <Router>
+              <Route exact path="/" component={App}/>
+            </Router>
+          </MuiThemeProvider>
+        </ThemesManager>
+      </Provider>
+    </AppContainer>,
+    document.getElementById('app'),
+  );
+};
 
-const routes = createRoutes(store);
+render();
 
-ReactDOM.render(
-  <Provider store={store}>
-    <MuiThemeProvider>
-      <Router
-        history={history}
-        routes={routes}
-        render={
-          applyRouterMiddleware(useScroll())
-        }
-      />
-    </MuiThemeProvider>
-  </Provider>,
-  document.getElementById('app'),
-);
+if (__IS_DEVELOPMENT_ENV__) {
+  module.hot && module.hot.accept('containers/App', render);
+}

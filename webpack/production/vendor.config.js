@@ -1,7 +1,6 @@
 import webpack from 'webpack';
 import AssetsPlugin from 'assets-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import settings from '../../settings';
 
 const {
@@ -39,16 +38,17 @@ export default {
       {
         test: /\.css$/,
         include: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true,
-              },
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true,
             },
-          ],
-        }),
+          },
+        ],
       },
     ],
   },
@@ -79,11 +79,6 @@ export default {
 
     new BabiliPlugin({}, {
       comments: false,
-    }),
-
-    new ExtractTextPlugin({
-      filename: '[name].[contenthash].min.css',
-      allChunks: true,
     }),
   ],
 };

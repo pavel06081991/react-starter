@@ -1,6 +1,5 @@
 import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
 import InlineChunkManifestHtmlWebpackPlugin from 'inline-chunk-manifest-html-webpack-plugin';
 import settings from '../../settings';
@@ -45,46 +44,42 @@ export default {
         test: /\.css$/,
         exclude: [
           /node_modules/,
-          PATHS.globalStylesDir,
+          PATHS.globalStylesFile,
         ],
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                modules: true,
-                minimize: true,
-              },
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              minimize: true,
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                config: PATHS.postcssConfigFile,
-              },
-            },
-          ],
-        }),
+          },
+          {
+            loader: 'postcss-loader',
+          },
+        ],
       },
 
       {
         test: /\.css$/,
-        include: PATHS.globalStylesDir,
-        use: ExtractTextPlugin.extract({
-          use: [
-            {
-              loader: 'css-loader',
-              options: {
-                minimize: true,
-              },
+        include: PATHS.globalStylesFile,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              minimize: true,
             },
-            {
-              loader: 'postcss-loader',
-              options: {
-                config: PATHS.postcssConfigFile,
-              },
-            },
-          ],
-        }),
+          },
+          {
+            loader: 'postcss-loader',
+          },
+        ],
       },
 
       {
@@ -146,11 +141,6 @@ export default {
 
     new BabiliPlugin({}, {
       comments: false,
-    }),
-
-    new ExtractTextPlugin({
-      filename: '[name].[contenthash].min.css',
-      allChunks: true,
     }),
 
     new InlineChunkManifestHtmlWebpackPlugin(),
