@@ -2,7 +2,6 @@ import webpack from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import ExtractTextPlugin from 'extract-text-webpack-plugin';
 import BabiliPlugin from 'babili-webpack-plugin';
-import ChunkManifestPlugin from 'chunk-manifest-webpack-plugin';
 import InlineChunkManifestHtmlWebpackPlugin from 'inline-chunk-manifest-html-webpack-plugin';
 import settings from '../../settings';
 
@@ -153,8 +152,6 @@ export default {
       filename: '[name].[contenthash].min.css',
       allChunks: true,
     }),
-
-    new ChunkManifestPlugin(),
 
     new InlineChunkManifestHtmlWebpackPlugin(),
   ],

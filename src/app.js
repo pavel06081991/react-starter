@@ -1,6 +1,6 @@
 import 'babel-polyfill';
 import 'normalize.css';
-import 'styles/global';
+import 'common/styles/global';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';

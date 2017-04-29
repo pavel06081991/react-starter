@@ -62,7 +62,6 @@
     "babel-preset-stage-2": "^6.22.0",
     "babili-webpack-plugin": "0.0.11",
     "chai": "^3.5.0",
-    "chunk-manifest-webpack-plugin": "^1.0.0",
     "cross-env": "^4.0.0",
     "css-loader": "^0.28.0",
     "del-cli": "^0.2.1",
@@ -76,7 +75,7 @@
     "file-loader": "^0.11.0",
     "html-webpack-plugin": "^2.26.0",
     "husky": "^0.13.3",
-    "inline-chunk-manifest-html-webpack-plugin": "^0.2.0",
+    "inline-chunk-manifest-html-webpack-plugin": "^1.1.1",
     "istanbul-instrumenter-loader": "^2.0.0",
     "json-server": "^0.9.6",
     "karma": "^1.4.1",
@@ -128,5 +127,6 @@
     "redux-immutable": "^4.0.0",
     "redux-saga": "^0.14.4",
     "reselect": "^3.0.0"
-  }
+  },
+  "repository": "https://github.com/pavel06081991/react-starter.git"
 }
